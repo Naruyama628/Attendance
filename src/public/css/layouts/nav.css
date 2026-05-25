@@ -1,0 +1,19 @@
+.navigation {
+    display: flex;
+    gap: 40px;
+}
+
+.navigation__link {
+    color: #fff;
+    font-size: 18px;
+    text-decoration: none;
+}
+
+.navigation__logout-button {
+    color: #fff;
+    font-size: 18px;
+    text-decoration: none;
+    background-color: #000;
+    border: none;
+    cursor: pointer;
+}

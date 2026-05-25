@@ -1,0 +1,116 @@
+body {
+    background-color: #f0eff2;
+}
+
+.main {
+    width: 60%;
+    margin: 0 auto;
+}
+
+.title {
+    border-left: 8px solid #000;
+    padding-left: 30px;
+    margin: 40px 0;
+}
+
+.attendance-detail-table {
+    width: 100%;
+}
+
+.attendance-detail-table__row:first-child .attendance-detail-table__header:first-child {
+    border-top-left-radius: 5px;
+}
+
+.attendance-detail-table__row:first-child .attendance-detail-table__data:last-child {
+    border-top-right-radius: 5px;
+}
+
+.attendance-detail-table__row:last-child .attendance-detail-table__header:first-child {
+    border-bottom-left-radius: 5px;
+}
+
+.attendance-detail-table__row:last-child .attendance-detail-table__data:last-child {
+    border-bottom-right-radius: 5px;
+}
+
+.attendance-detail-table__data,
+.attendance-detail-table__header {
+    text-align: left;
+    color: #737373;
+    padding: 20px 40px;
+    border-bottom: 3px solid #f0eff2;
+    background-color: #fff;
+}
+
+.attendance-detail-table__row {
+    display: flex;
+}
+
+.attendance-detail-table__header {
+    flex: 5;
+    display: flex;
+    align-items: center;
+}
+
+.attendance-detail-table__data {
+    font-weight: bold;
+    color: #000;
+    flex: 5;
+    text-align: center;
+}
+
+.attendance-detail-table__data--separator {
+    padding: 20px 0;
+    flex: 1;
+}
+
+.attendance-detail-table__data--empty {
+    flex: 10;
+}
+
+.attendance-detail-table__data--remarks {
+    flex: 21;
+    text-align: left;
+}
+
+.attendance-detail-table__textarea {
+    width: 50%;
+    min-height: 80px;
+    padding: 10px;
+    border: 1px solid #737373;
+    border-radius: 4px;
+    resize: vertical;
+    font-size: 16px;
+}
+
+.request-form {
+    width: 100%;
+}
+.request-form__button {
+    
+}
+
+.request-form__button {
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+}
+
+.request-form__button--submit {
+    margin-top: 20px;
+    font-size: 24px;
+    font-weight: bold;
+    background-color: #000;
+    color: #fff;
+    padding: 10px 50px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.request-form__notice {
+    margin-top: 10px;
+    display: flex;
+    justify-content: flex-end;
+    color: #f00;
+}

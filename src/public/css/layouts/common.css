@@ -1,0 +1,18 @@
+.header {
+    background-color: #000;
+}
+
+.header__inner {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px;
+}
+
+.header__nav {
+    margin: auto 40px;
+}
+
+.main {
+    width: 80%;
+    margin: 0 auto;
+}
