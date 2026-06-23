@@ -68,3 +68,8 @@ body {
     font-weight: bold;
     color: #000;
 }
+
+.request_nav {
+    display: flex;
+    border-bottom: 3px solid #000;
+}

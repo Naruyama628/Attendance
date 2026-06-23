@@ -34,6 +34,7 @@ body {
 
 .attendance-table {
     margin-top: 50px;
+    
     width: 100%;
 }
 
@@ -59,10 +60,9 @@ body {
 
 .attendance-table__data,
 .attendance-table__header {
-    flex: 1;
+
     text-align: left;
     color: #737373;
     padding: 10px 40px;
     border-bottom: 3px solid #f0eff2;
 }
-

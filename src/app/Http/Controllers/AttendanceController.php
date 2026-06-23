@@ -9,6 +9,7 @@ use App\Models\Attendance;
 use App\Models\BreakTime;
 use App\Models\User;
 use App\Models\AttendanceCorrectionRequest;
+use App\Models\BreakCorrectionRequest;
 
 class AttendanceController extends Controller
 {
@@ -42,14 +43,37 @@ class AttendanceController extends Controller
             }
         }
 
-        return view('attendances.create', compact('dt', 'status'));
+        $user = Auth()->user();
+        if($user->role === 'admin')
+        {
+            return redirect()->route('admin.attendance.list');            
+        } else {
+            return view('attendances.create', compact('dt', 'status'));
+        }
     }
 
     public function attendanceDetail(Request $request) {
-        $attendance = Attendance::find($request->id);
+        $attendance = $this->getCorrectedAttendance($request->id);
 
         $correctionRequest = AttendanceCorrectionRequest::where('attendance_id', $attendance->id)
+        ->where('status', 'pending')
+        ->latest()
         ->first();
+
+        if($correctionRequest) {
+            $additionalBreak = BreakCorrectionRequest::where('attendance_correction_id', $correctionRequest->id)
+                ->where('break_time_id', null)
+                ->first();
+
+            if ($additionalBreak) {
+                $attendance->breaks->push(
+                    new BreakTime([
+                        'break_start' => $additionalBreak->requested_break_start,
+                        'break_end' => $additionalBreak->requested_break_end,
+                    ])
+                );
+            }
+        }
 
         return view('attendances.show', compact('attendance', 'correctionRequest'));
     }
@@ -72,13 +96,17 @@ class AttendanceController extends Controller
                 return $attendance->work_date->format('Y-m-d');
             });
 
+        $attendances = $attendances->map(function ($attendance) {
+            return $this->getCorrectedAttendance($attendance->id);
+        });
+        
         foreach($attendances as $attendance) {
             // 合計休憩時間計算
             $this->totalBreakMinutes($attendance);
 
             // 合計勤務時間計算
             $this->totalWorkMinutes($attendance);
-        }
+        }        
 
         return view('attendances.index', compact('dates', 'attendances', 'currentMonth'));
     }
@@ -106,22 +134,61 @@ class AttendanceController extends Controller
     }
 
     // 共通化処理
+    public function getCorrectedAttendance($attendance_id)
+    {
+        $attendance = Attendance::find($attendance_id);
+
+        $attendanceCorrection = AttendanceCorrectionRequest::where('attendance_id', $attendance_id)
+            ->latest()
+            ->first();
+
+        if ($attendanceCorrection) {
+            $attendance->clock_in = $attendanceCorrection->requested_clock_in;
+            $attendance->clock_out = $attendanceCorrection->requested_clock_out;
+        }
+
+        $breaks = $attendance->breaks()->get();
+
+        foreach($breaks as $break) {
+            $breakCorrection = BreakCorrectionRequest::where('break_time_id', $break->id)
+            ->latest()->first();
+
+            if($breakCorrection) {
+                $break->break_start = $breakCorrection->requested_break_start;
+                $break->break_end = $breakCorrection->requested_break_end;
+            }
+        }
+
+        $attendance->setRelation('breaks', $breaks);
+        return $attendance;
+    }
+
     private function totalWorkMinutes($attendance)
     {
-        $totalWorkMinutes = 0;
-        $attendance->totalWorkTime = '0:00';
-        if($attendance->clock_in && $attendance->clock_out) {
-            $totalWorkMinutes = 0;
-            $totalWorkMinutes = $attendance->clock_in
-                ->diffInMinutes($attendance->clock_out);
-
-                
-            $attendance->totalWorkTime = sprintf(
-                '%d:%02d',
-                floor($totalWorkMinutes / 60),
-                $totalWorkMinutes % 60
-            );
+        if (!$attendance->clock_in || !$attendance->clock_out) {
+            $attendance->totalWorkTime = '0:00';
+            return;
         }
+
+        $workMinutes = $attendance->clock_in
+            ->diffInMinutes($attendance->clock_out);
+
+        $breakMinutes = 0;
+
+        foreach ($attendance->breaks as $break) {
+            if ($break->break_start && $break->break_end) {
+                $breakMinutes += $break->break_start
+                    ->diffInMinutes($break->break_end);
+            }
+        }
+
+        $workMinutes -= $breakMinutes;
+
+        $attendance->totalWorkTime = sprintf(
+            '%d:%02d',
+            floor($workMinutes / 60),
+            $workMinutes % 60
+        );
     }
 
     private function totalBreakMinutes($attendance)
@@ -130,6 +197,13 @@ class AttendanceController extends Controller
             ->get();
         $totalBreakMinutes = 0;
         foreach($breakTimes as $breakTime) {
+            $correctionBreak = BreakCorrectionRequest::where('break_time_id', $breakTime->id)
+                ->latest()->first();
+            if($correctionBreak) {
+                $breakTime->break_start = $correctionBreak->requested_break_start;
+                $breakTime->break_end = $correctionBreak->requested_break_end;
+            }
+
             if (!$breakTime->break_start || !$breakTime->break_end) {
                 continue;
             }

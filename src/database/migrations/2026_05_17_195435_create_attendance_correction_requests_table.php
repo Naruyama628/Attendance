@@ -26,8 +26,7 @@ class CreateAttendanceCorrectionRequestsTable extends Migration
 
             $table->foreignId('approved_by')->nullable()->constrained('users')->nullOnDelete();
             $table->timestamp('approved_at')->nullable();
-            $table->text('admin_comment')->nullable();
-
+            
             $table->timestamps();
         });
     }

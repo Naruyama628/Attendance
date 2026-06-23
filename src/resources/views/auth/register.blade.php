@@ -2,6 +2,7 @@
 
 @section('css')
 <link rel="stylesheet" href="{{ asset('css/auth/register.css') }}">
+<link rel="stylesheet" href="{{ asset('css/layouts/error.css') }}">
 @endsection
 
 @section('content')
@@ -10,21 +11,30 @@
     会員登録
 </h2>
 
-<form action="/register" method="POST" class="register-form">
+<form action="/register" method="POST" class="register-form"  novalidate>
     @csrf
     <div class="register-form__item">
         <label for="name" class="register-form__label">名前</label>
         <input type="text" class="register-form__input" name="name" id="name">
+        @error('name')
+            <p class="form__error">{{ $message }}</p>
+        @enderror
     </div>
 
     <div class="register-form__item">
         <label for="email" class="register-form__label">メールアドレス</label>
         <input type="email" class="register-form__input" name="email" id="email">
+        @error('email')
+            <p class="form__error">{{ $message }}</p>
+        @enderror
     </div>
 
     <div class="register-form__item">
         <label for="password" class="register-form__label">パスワード</label>
         <input type="password" class="register-form__input" name="password" id="password">
+        @error('password')
+            <p class="form__error">{{ $message }}</p>
+        @enderror
     </div>
 
     <div class="register-form__item">

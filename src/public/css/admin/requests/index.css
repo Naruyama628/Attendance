@@ -66,3 +66,18 @@ body {
     border-bottom: 3px solid #f0eff2;
 }
 
+.request-nav {
+    display: flex;
+    border-bottom: 1px solid #000;
+    padding-bottom: 20px;
+}
+
+.request-nav__link {
+    text-decoration: none;
+    margin-left: 80px;
+    color: #000;
+}
+
+.request-nav__link--active {
+    font-weight: bold;
+}

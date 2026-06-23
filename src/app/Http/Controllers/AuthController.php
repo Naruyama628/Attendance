@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\AdminAuthRequest;
 
 class AuthController extends Controller
 {
@@ -20,7 +21,7 @@ class AuthController extends Controller
         return view('admin.auth.login');
     }
 
-    public function adminLogin(Request $request) {
+    public function adminLogin(AdminAuthRequest $request) {
         $credentials = $request->only('email', 'password');
 
         // ログイン試行

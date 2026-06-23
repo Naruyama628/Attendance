@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class AttendanceCorrectionRequest extends Model
 {
     use HasFactory;
-        protected $fillable = [
+    protected $fillable = [
         'attendance_id',
         'user_id',
         'requested_clock_in',

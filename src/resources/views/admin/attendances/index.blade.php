@@ -9,6 +9,7 @@
 <h2 class="title">勤怠一覧</h2>
 
 <div class="month-nav">
+
     <a href="{{ route('admin.attendance.list', ['month' => $currentMonth->copy()->subDay()->format('Y-m-d')]) }}" class="month-nav__previous">← 前日</a>
 
     <span class="month-nav__current">{{ $currentMonth->format('Y/m/d') }}</span>
@@ -40,7 +41,7 @@
         
         <td class="attendance-table__data">
             @if($attendance)
-                <a href="/attendance/detail/{{ $attendance->id }}" class="attendance-table__detail">詳細</a>
+                <a href="/admin/attendance/detail/{{ $attendance->id }}" class="attendance-table__detail">詳細</a>
             @endif
         </td>
     </tr>

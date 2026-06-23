@@ -130,9 +130,24 @@ return [
     */
 
     'custom' => [
-        'attribute-name' => [
-            'rule-name' => 'custom-message',
+        'name' => [
+            'required' => 'お名前を入力してください',
         ],
+        'email' => [
+            'required' => 'メールアドレスを入力してください',
+            'email' => '有効なメールアドレスを入力してください'
+        ],
+        'password' => [
+            'required' => 'パスワードを入力してください',
+            'min' => 'パスワードは8文字以上で入力してください',
+            'confirmed' => 'パスワードと一致しません',
+        ],
+    ],
+
+    'attributes' => [
+        'name' => 'お名前',
+        'email' => 'メールアドレス',
+        'password' => 'パスワード',
     ],
 
     /*

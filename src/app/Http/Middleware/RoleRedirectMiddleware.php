@@ -5,8 +5,9 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\AdminController;
 
-class AdminMiddleware
+class RoleRedirectMiddleware
 {
     /**
      * Handle an incoming request.
@@ -17,15 +18,10 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if (!Auth::check()) {
-            return redirect('/admin/login');
-        }
-
-        if (Auth::user()->role !== 'admin') {
-            abort(403);
-        }
-
-        view()->share('isAdmin', Auth::check() && Auth::user()->role === 'user');
+        $request->attributes->set(
+            'is_admin',
+            Auth::user()->role === 'admin'
+        );
 
         return $next($request);
     }

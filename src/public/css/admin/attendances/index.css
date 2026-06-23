@@ -39,7 +39,6 @@ body {
 
 .attendance-table__row {
     background-color: #fff;
-    display: flex;
 }
 
 .attendance-table__row:first-child .attendance-table__header:first-child {
