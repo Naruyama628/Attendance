@@ -4,7 +4,7 @@
 
 ## Docker
 
-git clone https://github.com/Naruyama628/Attendance.git
+git clone https://github.com/Naruyama628/Attendance.git  
 cd Attendance
 
 cp src/.env.example src/.env
@@ -18,8 +18,7 @@ docker-compose exec php bash
 composer install  
 php artisan key:generate  
 php artisan migrate  
-php artisan db:seed  
-php artisan storage:link
+php artisan db:seed
 
 ## 環境変数
 
