@@ -6,7 +6,7 @@
 
 @section('content')
 
-<h2 class="title">勤怠一覧</h2>
+<h2 class="title">{{ $currentMonth->format('Y年m月d日の勤怠') }}</h2>
 
 <div class="month-nav">
 
