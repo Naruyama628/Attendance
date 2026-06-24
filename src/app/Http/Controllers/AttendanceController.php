@@ -139,6 +139,7 @@ class AttendanceController extends Controller
         $attendance = Attendance::find($attendance_id);
 
         $attendanceCorrection = AttendanceCorrectionRequest::where('attendance_id', $attendance_id)
+            ->where('status', 'approved')
             ->latest()
             ->first();
 
@@ -151,6 +152,9 @@ class AttendanceController extends Controller
 
         foreach($breaks as $break) {
             $breakCorrection = BreakCorrectionRequest::where('break_time_id', $break->id)
+            ->whereHas('attendanceCorrectionRequest', function ($query) {
+                $query->where('status', 'approved');
+            })
             ->latest()->first();
 
             if($breakCorrection) {
@@ -198,7 +202,12 @@ class AttendanceController extends Controller
         $totalBreakMinutes = 0;
         foreach($breakTimes as $breakTime) {
             $correctionBreak = BreakCorrectionRequest::where('break_time_id', $breakTime->id)
-                ->latest()->first();
+                ->whereHas('attendanceCorrectionRequest', function ($query) {
+                        $query->where('status', 'approved');
+                })
+                ->latest()
+                ->first();
+
             if($correctionBreak) {
                 $breakTime->break_start = $correctionBreak->requested_break_start;
                 $breakTime->break_end = $correctionBreak->requested_break_end;
@@ -207,7 +216,6 @@ class AttendanceController extends Controller
             if (!$breakTime->break_start || !$breakTime->break_end) {
                 continue;
             }
-
             $totalBreakMinutes += $breakTime->break_start
                 ->diffInMinutes($breakTime->break_end);
         }

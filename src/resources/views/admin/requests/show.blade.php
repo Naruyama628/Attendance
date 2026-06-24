@@ -103,7 +103,7 @@ approval" method="post" class="request-form">
         @if($collection->status === 'approved')
             <div class="request-form__button--approved">承認済み</div>
         @elseif($collection->status === 'pending')
-            <button class="request-form__button--submit">修正</button>
+            <button class="request-form__button--submit">承認</button>
         @endif
     </div>
 </form>

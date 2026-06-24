@@ -87,8 +87,6 @@ body {
     width: 100%;
 }
 
-.request-form__button {}
-
 .request-form__button {
     display: flex;
     width: 100%;

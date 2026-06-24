@@ -214,6 +214,7 @@ class AdminController extends Controller
         $attendance = Attendance::find($attendance_id);
 
         $attendanceCorrection = AttendanceCorrectionRequest::where('attendance_id', $attendance_id)
+        ->where('status', 'approved')
         ->latest()
         ->first();
 
@@ -226,6 +227,9 @@ class AdminController extends Controller
 
         foreach($breaks as $break) {
             $breakCorrection = BreakCorrectionRequest::where('break_time_id', $break->id)
+            ->whereHas('attendanceCorrectionRequest', function ($query) {
+                $query->where('status', 'approved');
+            })
             ->latest()->first();
 
             if($breakCorrection) {
@@ -281,7 +285,7 @@ class AdminController extends Controller
             fclose($handle);
         });
 
-        $fileName = $user->name . '_attendance.csv';
+        $fileName = $user->name . '月次勤怠.csv';
 
         $response->headers->set(
             'Content-Type',
@@ -332,6 +336,9 @@ class AdminController extends Controller
         $totalBreakMinutes = 0;
         foreach($breakTimes as $breakTime) {
             $correctionBreak = BreakCorrectionRequest::where('break_time_id', $breakTime->id)
+                ->whereHas('attendanceCorrectionRequest', function ($query) {
+                    $query->where('status', 'approved');
+                })
                 ->latest()->first();
             if($correctionBreak) {
                 $breakTime->break_start = $correctionBreak->requested_break_start;
