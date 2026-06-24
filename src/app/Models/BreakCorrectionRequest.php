@@ -20,11 +20,19 @@ class BreakCorrectionRequest extends Model
         'requested_break_end' => 'datetime',
     ];
 
-     public function attendanceCorrectionRequest()
+    public function attendanceCorrectionRequest()
     {
         return $this->belongsTo(
             AttendanceCorrectionRequest::class,
             'attendance_correction_id'
+        );
+    }
+
+    public function breakTime()
+    {
+        return $this->belongsTo(
+            BreakTime::class,
+            'break_time_id'
         );
     }
 }

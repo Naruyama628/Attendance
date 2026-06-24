@@ -19,4 +19,14 @@ class BreakTime extends Model
         'break_start' => 'datetime',
         'break_end' => 'datetime',
     ];
+
+    public function attendance()
+    {
+        return $this->belongsTo(Attendance::class);
+    }
+
+    public function breakCorrectionRequests()
+    {
+        return $this->hasMany(BreakCorrectionRequest::class);
+    }
 }
