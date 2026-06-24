@@ -80,9 +80,18 @@ Docker / Docker Compose
 
 - 一般ユーザーログイン画面
   - http://localhost/login
+  - 一般ユーザー1
+    - メールアドレス:user1@example.com
+    - パスワード:password
+  - 一般ユーザー2
+    - メールアドレス:user2@example.com
+    - パスワード:password
 
 - 管理者ログイン画面
   - http://localhost/admin/login
+  - 管理者ユーザー
+    - メールアドレス:admin@example.com
+    - パスワード:password
 
 - phpMyAdmin
   - http://localhost:8080

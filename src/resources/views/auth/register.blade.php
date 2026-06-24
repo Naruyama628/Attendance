@@ -15,7 +15,7 @@
     @csrf
     <div class="register-form__item">
         <label for="name" class="register-form__label">名前</label>
-        <input type="text" class="register-form__input" name="name" id="name">
+        <input type="text" class="register-form__input" name="name" id="name" value="{{ old('name') }}">
         @error('name')
             <p class="form__error">{{ $message }}</p>
         @enderror
@@ -23,7 +23,7 @@
 
     <div class="register-form__item">
         <label for="email" class="register-form__label">メールアドレス</label>
-        <input type="email" class="register-form__input" name="email" id="email">
+        <input type="email" class="register-form__input" name="email" id="email" value="{{ old('email') }}">
         @error('email')
             <p class="form__error">{{ $message }}</p>
         @enderror
